@@ -13,8 +13,7 @@ import br.com.cotiinformatica.entities.Perfil;
 public interface PerfilRepository extends JpaRepository<Perfil, UUID> {
 
 	@Query("""
-			SELECT p.id, p.nome 
-			FROM Perfil p
+			SELECT p FROM Perfil p
 			WHERE p.nome = :nome
 			""")
 	Perfil findByNome(

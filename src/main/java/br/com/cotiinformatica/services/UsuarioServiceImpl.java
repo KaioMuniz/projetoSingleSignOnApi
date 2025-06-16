@@ -40,6 +40,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		usuario.setNome(request.getNome());
 		usuario.setEmail(request.getEmail());
 		usuario.setSenha(cryptoComponent.getSHA256(request.getSenha()));
+		usuario.setPerfil(perfilRepository.findByNome("Operador"));
 		
 		usuarioRepository.save(usuario); //gravar o usuário no banco de dados
 		
@@ -49,6 +50,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		response.setNome(usuario.getNome());
 		response.setEmail(usuario.getEmail());
 		response.setDataHoraCriacao(LocalDateTime.now());
+		response.setPerfil(usuario.getPerfil().getNome());
 		
 		return response;
 	}
@@ -69,6 +71,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		response.setNome(usuario.getNome());
 		response.setEmail(usuario.getEmail());
 		response.setDataHoraAcesso(LocalDateTime.now());
+		response.setPerfil(usuario.getPerfil().getNome());
 		
 		//gerando o TOKEN JWT
 		response.setAccessToken(jwtTokenComponent.generateToken(usuario.getEmail(), usuario.getPerfil().getNome()));
