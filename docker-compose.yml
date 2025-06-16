@@ -1,0 +1,17 @@
+services:
+
+  usuariosapi-db:
+    image: postgres:16
+    container_name: usuariosapi-postgres
+    restart: always
+    ports:
+      - "5439:5432"
+    environment:
+      POSTGRES_DB: usuariosapi
+      POSTGRES_USER: usuariosapi_user
+      POSTGRES_PASSWORD: usuariosapi_password
+    volumes:
+      - usuariosapi-db-data:/var/lib/postgresql/data
+
+volumes:
+  usuariosapi-db-data:
