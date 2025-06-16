@@ -12,6 +12,7 @@ import br.com.cotiinformatica.dtos.AutenticarUsuarioResponse;
 import br.com.cotiinformatica.dtos.CriarUsuarioRequest;
 import br.com.cotiinformatica.dtos.CriarUsuarioResponse;
 import br.com.cotiinformatica.interfaces.UsuarioService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/usuario")
@@ -20,12 +21,12 @@ public class UsuarioController {
 	@Autowired UsuarioService usuarioService;
 	
 	@PostMapping("criar")
-	public ResponseEntity<CriarUsuarioResponse> criar(@RequestBody CriarUsuarioRequest request) {
+	public ResponseEntity<CriarUsuarioResponse> criar(@RequestBody @Valid CriarUsuarioRequest request) {
 		return ResponseEntity.ok(usuarioService.criarUsuario(request)); 
 	}
 	
 	@PostMapping("autenticar")
-	public ResponseEntity<AutenticarUsuarioResponse> autenticar(@RequestBody AutenticarUsuarioRequest request) {
+	public ResponseEntity<AutenticarUsuarioResponse> autenticar(@RequestBody @Valid AutenticarUsuarioRequest request) {
 		return ResponseEntity.ok(usuarioService.autenticarUsuario(request));
 	}
 }
