@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 import br.com.cotiinformatica.exceptions.AcessoNegadoException;
-import br.com.cotiinformatica.exceptions.EmailJCadastradoException;
+import br.com.cotiinformatica.exceptions.EmailJaCadastradoException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -36,9 +36,9 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
 	}
 	
-	@ExceptionHandler(EmailJCadastradoException.class)
+	@ExceptionHandler(EmailJaCadastradoException.class)
 	public ResponseEntity<Map<String, Object>> handleEmailJCadastradoException(
-			EmailJCadastradoException exception,
+			EmailJaCadastradoException exception,
 			WebRequest request
 			) {
 				
