@@ -21,6 +21,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 
+import br.com.cotiinformatica.dtos.AutenticarUsuarioRequest;
+import br.com.cotiinformatica.dtos.AutenticarUsuarioResponse;
 import br.com.cotiinformatica.dtos.CriarUsuarioRequest;
 import br.com.cotiinformatica.dtos.CriarUsuarioResponse;
 
@@ -113,7 +115,36 @@ class ProjetoSingleSignOnApiApplicationTests {
 	@Test
 	@Order(3)
 	void deveAutenticarUsuarioComSucesso() {
-		fail("Não implementado.");
+
+		try {
+
+			// Arrange (criando os dados do teste)
+			var request = new AutenticarUsuarioRequest();
+
+			request.setEmail(emailUsuario);
+			request.setSenha(senhaUsuario);
+
+			// Act (executar o endpoint POST /api/v1/usuario/autenticar)
+			var result = mockMvc.perform(post("/api/v1/usuario/autenticar") // endereço do serviço da API
+					.contentType("application/json") // enviando dados em formato JSON
+					.content(mapper.writeValueAsString(request))) // serializando em json
+					.andExpect(status().isOk()) // esperando que a resposta seja 200 (OK)
+					.andReturn(); // capturando o conteudo da resposta
+
+			// Assert (verificar o resultado obtido)
+			var content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+			var response = mapper.readValue(content, AutenticarUsuarioResponse.class);
+
+			assertNotNull(response.getId()); // verificando se o ID está preenchido
+			assertNotNull(response.getNome()); // verificando se o nome está preenchido
+			assertEquals(response.getEmail(), request.getEmail()); // verificando o email é igual ao cadastrado
+			assertEquals(response.getPerfil(), "Operador"); // verificando se o perfil é operador
+			assertNotNull(response.getDataHoraAcesso()); // verificando se a data está preenchida
+			assertNotNull(response.getDataHoraExpiracao()); // verificando se a data está preenchida
+			assertNotNull(response.getAccessToken()); // verificando se o token está preenchido
+		} catch (Exception e) {
+			fail("Teste falhou: " + e.getMessage());
+		}
 	}
 
 	@Test
